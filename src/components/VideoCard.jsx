@@ -6,58 +6,48 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 
-function VideoCard({ video, isVideoPage }) {
+function VideoCard({ video }) {
   if (!video?.snippet) return null;
-
-  const videoId = video.id?.videoId || video.id;
 
   return (
     <Card
       sx={{
-        display: isVideoPage ? "flex" : "block",
-        width: isVideoPage ? "100%" : 330,
+        width: 330,
         backgroundColor: "#181818",
-        borderRadius: 3,
         boxShadow: "none",
-        transition: "0.3s",
-        "&:hover": {
-          transform: "scale(1.02)",
-        },
+        borderRadius: 3,
       }}
     >
-      <Link
-        to={`/video/${videoId}`}
-        style={{ textDecoration: "none", color: "inherit" }}
-      >
+      <Link to={`/video/${video.id.videoId}`}>
         <CardMedia
           component="img"
           image={video.snippet.thumbnails.high.url}
           alt={video.snippet.title}
           sx={{
-            width: isVideoPage ? 180 : "100%",
-            height: isVideoPage ? 100 : 180,
+            width: "100%",
+            height: 180,
           }}
         />
-
-        <CardContent sx={{ flex: 1 }}>
-          <Typography
-            variant="subtitle1"
-            fontWeight="bold"
-            color="white"
-            noWrap
-          >
-            {video.snippet.title}
-          </Typography>
-
-          <Typography
-            variant="body2"
-            color="gray"
-            noWrap
-          >
-            {video.snippet.channelTitle}
-          </Typography>
-        </CardContent>
       </Link>
+
+      <CardContent>
+        <Typography
+          variant="subtitle1"
+          fontWeight="bold"
+          color="white"
+          noWrap
+        >
+          {video.snippet.title}
+        </Typography>
+
+        <Typography
+          variant="body2"
+          color="gray"
+          noWrap
+        >
+          {video.snippet.channelTitle}
+        </Typography>
+      </CardContent>
     </Card>
   );
 }

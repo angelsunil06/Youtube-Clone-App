@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import ReactPlayer from "react-player";
 import { Box, Typography } from "@mui/material";
 
 import { fetchFromAPI } from "../utils/fetchFromAPI";
@@ -21,29 +20,48 @@ function VideoDetail() {
     ).then((data) => setVideos(data.items || []));
   }, [id]);
 
-  if (!videoDetail) return <Typography color="white">Loading...</Typography>;
+  if (!videoDetail) {
+    return (
+      <Typography color="white" p={3}>
+        Loading...
+      </Typography>
+    );
+  }
 
   return (
     <Box
       sx={{
-        display: "flex",
-        flexDirection: { xs: "column", lg: "row" },
-        background: "#0f0f0f",
-        minHeight: "100vh",
+        minHeight: "95vh",
+        backgroundColor: "#0f0f0f",
+        display: { xs: "block", lg: "flex" },
+        p: 2,
       }}
     >
-      <Box
-        sx={{
-          flex: 3,
-          p: 3,
-        }}
-      >
-        <ReactPlayer
-          url={`https://www.youtube.com/watch?v=${id}`}
-          controls
-          width="100%"
-          height="70vh"
-        />
+      <Box flex={2}>
+        <Box
+          sx={{
+            position: "relative",
+            width: "100%",
+            paddingTop: "56.25%",
+            borderRadius: "12px",
+            overflow: "hidden",
+          }}
+        >
+          <iframe
+            src={`https://www.youtube.com/embed/${id}`}
+            title={videoDetail.snippet.title}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              border: "none",
+            }}
+          />
+        </Box>
 
         <Typography
           variant="h5"
@@ -59,19 +77,22 @@ function VideoDetail() {
         </Typography>
 
         <Typography color="gray" mt={1}>
-          👁 {Number(videoDetail.statistics.viewCount).toLocaleString()} Views
+          👁{" "}
+          {Number(videoDetail.statistics?.viewCount || 0).toLocaleString()}{" "}
+          Views
         </Typography>
 
         <Typography color="gray">
-          👍 {Number(videoDetail.statistics.likeCount).toLocaleString()} Likes
+          👍{" "}
+          {Number(videoDetail.statistics?.likeCount || 0).toLocaleString()}{" "}
+          Likes
         </Typography>
       </Box>
 
       <Box
-        sx={{
-          flex: 1,
-          p: 2,
-        }}
+        px={2}
+        py={{ md: 1 }}
+        flex={1}
       >
         <VideoList videos={videos} />
       </Box>
