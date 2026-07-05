@@ -1,4 +1,4 @@
-import { Stack } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import { categories } from "../utils/constants";
 
 function Sidebar({ selectedCategory, setSelectedCategory }) {
@@ -6,35 +6,58 @@ function Sidebar({ selectedCategory, setSelectedCategory }) {
     <Stack
       direction="column"
       sx={{
-        height: "90vh",
-        overflowY: "auto",
-        borderRight: "1px solid #3d3d3d",
-        p: 2,
+        width: { xs: "100%", md: "220px" },
+        height: "calc(100vh - 70px)",
         background: "#0f0f0f",
+        borderRight: "1px solid #272727",
+        px: 1.5,
+        py: 2,
+        overflowY: "auto",
       }}
     >
       {categories.map((category) => (
-        <button
+        <Stack
           key={category.name}
+          direction="row"
+          alignItems="center"
+          spacing={2}
           onClick={() => setSelectedCategory(category.name)}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "12px",
-            padding: "12px",
-            marginBottom: "10px",
-            border: "none",
-            borderRadius: "20px",
+          sx={{
             cursor: "pointer",
-            background:
-              selectedCategory === category.name ? "#ff0000" : "#202020",
-            color: "#fff",
-            fontSize: "15px",
+            px: 2,
+            py: 1.4,
+            borderRadius: "12px",
+            mb: 0.8,
+            transition: "0.3s",
+            backgroundColor:
+              selectedCategory === category.name ? "#272727" : "transparent",
+            "&:hover": {
+              backgroundColor: "#272727",
+            },
           }}
         >
-          {category.icon}
-          {category.name}
-        </button>
+          <Typography
+            sx={{
+              color:
+                selectedCategory === category.name ? "#ff0000" : "#ffffff",
+              display: "flex",
+              alignItems: "center",
+              fontSize: "22px",
+            }}
+          >
+            {category.icon}
+          </Typography>
+
+          <Typography
+            sx={{
+              color: "#ffffff",
+              fontWeight: selectedCategory === category.name ? 600 : 400,
+              fontSize: "15px",
+            }}
+          >
+            {category.name}
+          </Typography>
+        </Stack>
       ))}
     </Stack>
   );

@@ -4,10 +4,15 @@ import VideoCard from "./VideoCard";
 function VideoList({ videos }) {
   return (
     <Box
-      display="flex"
-      flexWrap="wrap"
-      justifyContent="center"
-      gap={3}
+      sx={{
+        display: "flex",
+        flexWrap: "wrap",
+        justifyContent: {
+          xs: "center",
+          sm: "flex-start",
+        },
+        gap: 3,
+      }}
     >
       {videos?.map((video, index) => (
         <VideoCard

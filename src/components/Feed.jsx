@@ -20,14 +20,16 @@ function Feed() {
   return (
     <Box
       sx={{
-        display: { md: "flex" },
+        display: "flex",
+        background: "#0f0f0f",
+        minHeight: "calc(100vh - 70px)",
       }}
     >
+      {/* Sidebar */}
       <Box
         sx={{
-          height: { sx: "auto", md: "92vh" },
-          borderRight: "1px solid #3d3d3d",
-          px: { xs: 0, md: 2 },
+          flex: { md: "0 0 220px" },
+          borderRight: "1px solid #272727",
         }}
       >
         <Sidebar
@@ -36,22 +38,29 @@ function Feed() {
         />
       </Box>
 
+      {/* Videos */}
       <Box
-        p={2}
         sx={{
+          flex: 1,
+          px: 3,
+          py: 2,
           overflowY: "auto",
-          flex: 2,
-          height: "90vh",
         }}
       >
         <Typography
           variant="h4"
-          fontWeight="bold"
-          mb={3}
-          color="white"
+          sx={{
+            color: "#fff",
+            fontWeight: "bold",
+            mb: 3,
+            fontSize: {
+              xs: "1.8rem",
+              md: "2.2rem",
+            },
+          }}
         >
           {selectedCategory}
-          <span style={{ color: "#FC1503" }}> Videos</span>
+          <span style={{ color: "#ff0000" }}> Videos</span>
         </Typography>
 
         <VideoList videos={videos} />
