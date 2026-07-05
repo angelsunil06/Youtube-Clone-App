@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import ReactPlayer from "react-player";
 import { Box, Typography } from "@mui/material";
 
 import { fetchFromAPI } from "../utils/fetchFromAPI";
@@ -13,49 +14,36 @@ function VideoDetail() {
 
   useEffect(() => {
     fetchFromAPI(`videos?part=snippet,statistics&id=${id}`)
-      .then((data) => {
-        setVideoDetail(data.items?.[0]);
-      })
-      .catch((err) => console.error(err));
+      .then((data) => setVideoDetail(data.items?.[0]));
 
     fetchFromAPI(
       `search?part=snippet&relatedToVideoId=${id}&type=video&maxResults=15`
-    )
-      .then((data) => {
-        setVideos(data.items || []);
-      })
-      .catch((err) => console.error(err));
+    ).then((data) => setVideos(data.items || []));
   }, [id]);
 
-  if (!videoDetail) {
-    return (
-      <Typography color="white" p={3}>
-        Loading...
-      </Typography>
-    );
-  }
+  if (!videoDetail) return <Typography color="white">Loading...</Typography>;
 
   return (
     <Box
       sx={{
-        minHeight: "95vh",
+        display: "flex",
+        flexDirection: { xs: "column", lg: "row" },
         background: "#0f0f0f",
-        display: { xs: "block", md: "flex" },
-        p: 2,
-        gap: 3,
+        minHeight: "100vh",
       }}
     >
-      <Box flex={2}>
-        <iframe
+      <Box
+        sx={{
+          flex: 3,
+          p: 3,
+        }}
+      >
+        <ReactPlayer
+          url={`https://www.youtube.com/watch?v=${id}`}
+          controls
           width="100%"
-          height="500"
-          src={`https://www.youtube.com/embed/${id}`}
-          title={videoDetail.snippet.title}
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-          style={{ borderRadius: "10px" }}
-        ></iframe>
+          height="70vh"
+        />
 
         <Typography
           variant="h5"
@@ -71,21 +59,20 @@ function VideoDetail() {
         </Typography>
 
         <Typography color="gray" mt={1}>
-          👁 {videoDetail.statistics?.viewCount
-            ? Number(videoDetail.statistics.viewCount).toLocaleString()
-            : "0"}{" "}
-          Views
+          👁 {Number(videoDetail.statistics.viewCount).toLocaleString()} Views
         </Typography>
 
         <Typography color="gray">
-          👍 {videoDetail.statistics?.likeCount
-            ? Number(videoDetail.statistics.likeCount).toLocaleString()
-            : "Hidden"}{" "}
-          Likes
+          👍 {Number(videoDetail.statistics.likeCount).toLocaleString()} Likes
         </Typography>
       </Box>
 
-      <Box flex={1}>
+      <Box
+        sx={{
+          flex: 1,
+          p: 2,
+        }}
+      >
         <VideoList videos={videos} />
       </Box>
     </Box>
